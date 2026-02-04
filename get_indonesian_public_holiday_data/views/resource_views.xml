@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- TODO: GANTI TREE JADI LIST -->
+    <record id="resource_calendar_leaves_tree_inherit" model="ir.ui.view">
+        <field name="name">resource.calendar.leaves.tree.inherit.indonesian.holiday</field>
+        <field name="model">resource.calendar.leaves</field>
+        <field name="inherit_id" ref="hr_holidays.resource_calendar_leaves_tree_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="js_class">resource_calendar_leaves_list_view</attribute>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="is_public_holiday" invisible="1"/>
+                <field name="holiday_source" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_fetch_holiday_wizard_form" model="ir.ui.view">
+        <field name="name">fetch.holiday.wizard.form</field>
+        <field name="model">fetch.holiday.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Fetch Indonesian Public Holidays">
+                <group>
+                    <field name="year" required="1" widget="char"/>
+                    <field name="month"/>
+                    <field name="include_cuti_bersama"/>
+                </group>
+                <footer>
+                    <button name="fetch_holidays" string="Ambil Data" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fetch_holiday_wizard" model="ir.actions.act_window">
+        <field name="name">Fetch Indonesian Public Holidays</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">fetch.holiday.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

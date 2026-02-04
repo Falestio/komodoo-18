@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Indonesian Public Holiday Data</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .section {
+            margin-bottom: 2rem;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 5px;
+            margin: 1rem 0;
+        }
+        .step {
+            margin-bottom: 1.5rem;
+        }
+        .footer-container {
+            font-size: 1.2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="section">
+            <h2>Deskripsi</h2>
+            <p>Modul ini menambahkan tombol untuk mengambil data hari libur nasional Indonesia.</p>
+        </div>
+
+        <div class="section">
+            <h2>Sumber Data</h2>
+            <p>Modul ini menggunakan <a href="https://dayoffapi.vercel.app/api" target="_blank">https://dayoffapi.vercel.app/api</a> yang dibuat oleh <a href="https://github.com/gerinsp" target="_blank">https://github.com/gerinsp</a></p>
+            
+            <p>Mengutip dari dokumentasi API:</p>
+            <blockquote class="blockquote">
+                <p>"API ini mengambil data dari <a href="http://tanggalan.com/" target="_blank">tanggalan.com</a> dengan cara di scraping setiap 1 bulan sekali menggunakan github action."</p>
+            </blockquote>
+        </div>
+
+        <div class="section">
+            <h2>Dependency</h2>
+            <p>Modul ini memiliki dependency pada modul hr_holidays</p>
+            <img src="assets/hr_holidays.png" alt="Module Dependency" class="img-fluid">
+        </div>
+
+        <div class="section">
+            <h2>Cara Kerja</h2>
+            
+            <div class="step">
+                <p>1. Pastikan user memiliki access right sebagai administrator pada modul Time Off</p>
+                <img src="assets/access_right.png" alt="Access Right" class="img-fluid">
+            </div>
+            
+            <div class="step">
+                <p>2. Untuk mengambil data libur baru, pergi ke aplikasi Time off > Configuration > Public Holidays</p>
+                <img src="assets/menu_nav.png" alt="Menu Navigation" class="img-fluid">
+            </div>
+            
+            <div class="step">
+                <p>3. Klik tombol "Ambil Data Hari Libur"</p>
+                <img src="assets/tombol_open_wizard.png" alt="Button to Open Wizard" class="img-fluid">
+            </div>
+            
+            <div class="step">
+                <p>4. Atur Tahun, Bulan, dan apakah ingin mengambil data libur cuti bersama. Lalu Klik "Ambil Data"</p>
+                <img src="assets/wizard_ambil_data.png" alt="Data Retrieval Wizard" class="img-fluid">
+            </div>
+            
+            <div class="step">
+                <p>5. Data berhasil di tambahkan, jika ada hari libur dengan nama dan tanggal yang sama modul tidak akan membuat data libur tersebut sehingga tidak ada duplikat.</p>
+                <img src="assets/hasil_akhir.png" alt="Final Result" class="img-fluid">
+            </div>
+        </div>
+    </div>
+    <footer class="text-center py-3 mt-4 border-top">
+        <small style="font-size: 1.15rem;" class="footer-container">
+            Author: 
+            <a href="https://www.linkedin.com/in/falestio-hanif-al-hakim-ab4610221/" target="_blank">
+                <i class="bi bi-linkedin" style="font-size:1.3em;vertical-align:middle;"></i> LinkedIn
+            </a> | 
+            <a href="https://falestio.my.id" target="_blank">
+                <i class="bi bi-globe" style="font-size:1.3em;vertical-align:middle;"></i> falestio.my.id
+            </a>
+        </small>
+    </footer>
+</body>
+</html>

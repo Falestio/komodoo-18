@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="ResourceCalendarLeaveListView.Buttons" t-inherit="web.ListView.Buttons" owl="1">
+        <xpath expr="//t[contains(@t-if, 'editedRecord')]" position="before">
+            <button class="btn btn-success ms-2" t-on-click="openFetchHolidayWizard">Ambil Data Hari Libur</button>
+        </xpath>
+    </t>
+</templates>
