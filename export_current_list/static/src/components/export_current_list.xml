@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <!-- Extend ListView to add export button -->
+    <t t-inherit="web.ListView" t-inherit-mode="extension">
+        <xpath expr="//t[@t-set-slot='control-panel-selection-actions']//div[@class='o_list_selection_container m-1 m-md-0 d-flex gap-1']" position="inside">
+            <button class="btn btn-secondary export-current-list-btn"
+                    t-on-click="() => this.onExportCurrentList()"
+                    title="Export selected rows to Excel">
+                <i class="fa fa-file-excel-o me-1"/>
+            </button>
+        </xpath>
+    </t>
+
+</templates>

@@ -1,0 +1,151 @@
+/* KM HR Attendance Dashboard Styles */
+
+.o_km_attendance_dashboard {
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.o_km_attendance_header {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.o_km_attendance_header h2 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+}
+
+.o_km_attendance_controls {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.o_km_control_group {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.o_km_control_group label {
+    margin: 0;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.o_km_control_group .form-control,
+.o_km_control_group .form-select {
+    min-width: 170px;
+}
+
+.o_km_loading {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+}
+
+.o_km_summary_cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.o_km_card {
+    background: #fff;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.o_km_card_label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 6px;
+}
+
+.o_km_card_value {
+    font-size: 22px;
+    font-weight: 700;
+    color: #333;
+}
+
+.o_km_attendance_table {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    padding: 0;
+    overflow: hidden;
+}
+
+.o_km_attendance_table thead {
+    background-color: #f1f3f5;
+}
+
+.o_km_attendance_table th {
+    font-weight: 600;
+    color: #495057;
+    padding: 12px 10px;
+    border-bottom: 2px solid #dee2e6;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.o_km_attendance_table td {
+    padding: 10px;
+    font-size: 13px;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+.o_km_attendance_table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.o_km_attendance_table .btn-link {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.o_km_employee_cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.o_km_employee_avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #dee2e6;
+}
+
+.o_km_sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+@media (max-width: 768px) {
+    .o_km_attendance_controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .o_km_control_group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .o_km_summary_cards {
+        grid-template-columns: 1fr;
+    }
+}

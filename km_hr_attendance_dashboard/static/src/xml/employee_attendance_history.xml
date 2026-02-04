@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="km_hr_attendance_dashboard.EmployeeAttendanceHistory">
+        <div class="o_km_attendance_dashboard">
+            <div class="o_km_attendance_header">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="mb-0">Employee Attendance History</h2>
+                </div>
+
+                <div class="o_km_attendance_controls">
+                    <div class="o_km_control_group">
+                        <label>Employee:</label>
+                        <select class="form-select" t-on-change="onEmployeeChange" t-att-value="state.employeeId">
+                            <option t-foreach="state.employees" t-as="emp" t-key="emp.id" t-att-value="emp.id">
+                                <t t-esc="emp.name"/>
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="o_km_control_group">
+                        <label>Bulan:</label>
+                        <input type="month" class="form-control" t-model="state.month" t-on-change="onMonthChange"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="o_km_loading" t-if="state.loading">
+                <i class="fa fa-spinner fa-spin fa-2x"/>
+                <p>Loading data...</p>
+            </div>
+
+            <div class="o_km_summary_cards" t-if="!state.loading">
+                <div class="o_km_card">
+                    <div class="o_km_card_label">On Time</div>
+                    <div class="o_km_card_value"><t t-esc="state.stats.on_time || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">Late</div>
+                    <div class="o_km_card_value text-warning"><t t-esc="state.stats.late || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">No Clock Out</div>
+                    <div class="o_km_card_value text-danger"><t t-esc="state.stats.no_clock_out || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">No Clock In</div>
+                    <div class="o_km_card_value text-danger"><t t-esc="state.stats.no_clock_in || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">Absent</div>
+                    <div class="o_km_card_value text-danger"><t t-esc="state.stats.absent || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">Day Off</div>
+                    <div class="o_km_card_value"><t t-esc="state.stats.day_off || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">Time Off</div>
+                    <div class="o_km_card_value"><t t-esc="state.stats.time_off || 0"/></div>
+                </div>
+            </div>
+
+            <div class="o_km_attendance_table" t-if="!state.loading">
+                <table class="table table-sm table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Check In</th>
+                            <th>Check Out</th>
+                            <th class="text-end">Worked Hours</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="state.attendances" t-as="row" t-key="row.id">
+                            <td><t t-esc="formatDateTime(row.check_in)"/></td>
+                            <td><t t-esc="formatDateTime(row.check_out)"/></td>
+                            <td class="text-end"><t t-esc="formatHours(row.worked_hours)"/></td>
+                            <td>
+                                <span t-att-class="'badge ' + (row.status === 'on_time' ? 'bg-success' : row.status === 'late' ? 'bg-warning' : row.status === 'early' ? 'bg-warning' : 'bg-secondary')">
+                                    <t t-esc="row.status || '-'"/>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr t-if="state.attendances.length === 0">
+                            <td colspan="4" class="text-center text-muted py-4">Tidak ada data attendance</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+</templates>

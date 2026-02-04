@@ -1,0 +1,79 @@
+// Minimalist navbar with dark text, background follows settings
+.o_main_navbar,
+.o_main_navbar .o_menu_brand,
+.o_main_navbar .o_menu_sections,
+.o_main_navbar .o_menu_systray,
+.o_main_navbar .o_menu_toggle,
+.o_main_navbar .dropdown-toggle,
+.o_main_navbar .o_user_menu .dropdown-toggle,
+.o_main_navbar .o_menu_apps .dropdown-toggle,
+.o_main_navbar .o_menu_apps .dropdown-item,
+.o_main_navbar .o_menu_systray .dropdown-toggle,
+.o_main_navbar .o_menu_systray .dropdown-item,
+.o_main_navbar {
+	background: #fff !important;
+	border-bottom: 1px solid #e5e5e5 !important;
+	box-shadow: none !important;
+    color: #111 !important;
+}
+.o_main_navbar .o_dropdown,
+.o_main_navbar .o_dropdown .dropdown-toggle,
+.o_main_navbar .o_dropdown .dropdown-item {
+    color: #111 !important;
+}
+
+// Active menu item in navbar: bold, black text
+.o_main_navbar .o_menu_sections .o_menu_entry.active,
+.o_main_navbar .o_menu_sections .o_menu_entry.o_active {
+	color: #111 !important;
+	font-weight: 700 !important;
+}
+
+// Also handle o_nav_entry for active menu items
+.o_main_navbar .o_menu_sections .o_nav_entry.active,
+.o_main_navbar .o_menu_sections .o_nav_entry.o_active {
+    color: #111 !important;
+    font-weight: 700 !important;
+}
+
+.o_main_navbar .dropdown-menu {
+    color: #222 !important;
+}
+// Minimalist white appsbar and navbar overrides
+
+.mk_apps_sidebar_panel {
+	background: #fff !important;
+	border-right: 1px solid #e5e5e5 !important;
+	box-shadow: none !important;
+	.mk_apps_sidebar {
+		.mk_apps_sidebar_menu {
+			> li > a {
+				background: transparent !important;
+				color: #404040 !important;
+				border-radius: 0.375rem !important;
+				font-size: 14px !important;
+				font-weight: 400 !important;
+				transition: background 0.2s, color 0.2s !important;
+			}
+			> li.active > a,
+			> li:hover > a {
+				background: #f5f5f5 !important;
+				color: #171717 !important;
+			}
+		}
+	}
+}
+
+// Always force small sidebar
+.mk_sidebar_type_large,
+.mk_sidebar_type_small {
+	--mk-sidebar-width: #{$mk-sidebar-small-width};
+	.mk_apps_sidebar_name,
+	.mk_apps_sidebar_logo {
+		display: none !important;
+	}
+	.mk_apps_sidebar_icon {
+		margin-right: 0 !important;
+	}
+}
+

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="km_hr_attendance_dashboard.AttendanceDashboard">
+        <div class="o_km_attendance_dashboard">
+            <div class="o_km_attendance_header">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h2 class="mb-0">Attendance Dashboard</h2>
+                    <button class="btn btn-outline-primary btn-sm" t-on-click="onToggleRangeMode">
+                        <t t-esc="state.rangeMode ? 'Range Mode' : 'Daily Mode'"/>
+                    </button>
+                </div>
+
+                <div class="o_km_attendance_controls">
+                    <div class="o_km_control_group" t-if="!state.rangeMode">
+                        <label>Tanggal:</label>
+                        <input type="date" class="form-control" t-model="state.date" t-on-change="onDateChange"/>
+                    </div>
+
+                    <div class="o_km_control_group" t-if="state.rangeMode">
+                        <label>Mulai:</label>
+                        <input type="date" class="form-control" t-model="state.dateFrom" t-on-change="onDateFromChange"/>
+                    </div>
+                    <div class="o_km_control_group" t-if="state.rangeMode">
+                        <label>Sampai:</label>
+                        <input type="date" class="form-control" t-model="state.dateTo" t-on-change="onDateToChange"/>
+                    </div>
+
+                    <div class="o_km_control_group">
+                        <label>Cari Karyawan:</label>
+                        <input type="text" class="form-control" placeholder="Nama karyawan" t-on-input="onSearchChange"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="o_km_loading" t-if="state.loading">
+                <i class="fa fa-spinner fa-spin fa-2x"/>
+                <p>Loading data...</p>
+            </div>
+
+            <div class="o_km_summary_cards" t-if="!state.loading">
+                <div class="o_km_card">
+                    <div class="o_km_card_label">On Time</div>
+                    <div class="o_km_card_value"><t t-esc="state.stats.on_time || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">Late</div>
+                    <div class="o_km_card_value text-warning"><t t-esc="state.stats.late || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">No Clock Out</div>
+                    <div class="o_km_card_value text-danger"><t t-esc="state.stats.no_clock_out || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">No Clock In</div>
+                    <div class="o_km_card_value text-danger"><t t-esc="state.stats.no_clock_in || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">Absent</div>
+                    <div class="o_km_card_value text-danger"><t t-esc="state.stats.absent || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">Day Off</div>
+                    <div class="o_km_card_value"><t t-esc="state.stats.day_off || 0"/></div>
+                </div>
+                <div class="o_km_card">
+                    <div class="o_km_card_label">Time Off</div>
+                    <div class="o_km_card_value"><t t-esc="state.stats.time_off || 0"/></div>
+                </div>
+            </div>
+
+            <div class="o_km_attendance_table" t-if="!state.loading">
+                <table class="table table-sm table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th class="o_km_sortable" t-on-click="() => this.onSort('employee')">Employee</th>
+                            <th class="o_km_sortable" t-on-click="() => this.onSort('date')">Tanggal</th>
+                            <th class="o_km_sortable" t-on-click="() => this.onSort('check_in')">Check In</th>
+                            <th class="o_km_sortable" t-on-click="() => this.onSort('check_out')">Check Out</th>
+                            <th class="text-end o_km_sortable" t-on-click="() => this.onSort('worked_hours')">Worked Hours</th>
+                            <th class="o_km_sortable" t-on-click="() => this.onSort('status')">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="sortedAttendances" t-as="row" t-key="row.id">
+                            <td>
+                                <div class="o_km_employee_cell">
+                                    <img t-att-src="row.employee_image" alt="" class="o_km_employee_avatar"/>
+                                    <button class="btn btn-link p-0" t-on-click="() => this.openAttendanceForm(row.id)">
+                                        <t t-esc="row.employee_name"/>
+                                    </button>
+                                </div>
+                            </td>
+                            <td><t t-esc="formatDate(row.check_in_date)"/></td>
+                            <td><t t-esc="formatTime(row.check_in)"/></td>
+                            <td><t t-esc="formatTime(row.check_out)"/></td>
+                            <td class="text-end"><t t-esc="formatHours(row.worked_hours)"/></td>
+                            <td>
+                                <span t-att-class="'badge ' + (row.status === 'on_time' ? 'bg-success' : row.status === 'late' ? 'bg-warning' : row.status === 'early' ? 'bg-warning' : 'bg-secondary')">
+                                    <t t-esc="row.status || '-'"/>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr t-if="state.attendances.length === 0">
+                            <td colspan="6" class="text-center text-muted py-4">Tidak ada data attendance</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </t>
+</templates>

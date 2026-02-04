@@ -1,0 +1,24 @@
+/* Export Current List Styles */
+
+.export-current-list-btn {
+    margin-left: 4px;
+}
+
+.export-current-list-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.export-current-list-btn .fa-file-excel-o {
+    color: #217346;
+}
+
+.export-current-list-btn:hover:not(:disabled) {
+    background-color: #217346;
+    border-color: #217346;
+    color: white;
+}
+
+.export-current-list-btn:hover:not(:disabled) .fa-file-excel-o {
+    color: white;
+}

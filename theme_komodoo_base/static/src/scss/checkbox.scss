@@ -1,0 +1,56 @@
+// Checkbox Styling for List View
+// Inherits and enhances Odoo's default checkbox styles
+
+// List view checkbox styling - larger size
+.o_list_table {
+    .o_list_record_selector {
+        // Increase selector column width
+        width: 48px;
+        
+        // Checkbox component styling
+        .o-checkbox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            input[type="checkbox"] {
+                width: 1.25rem !important;
+                height: 1.25rem !important;
+                cursor: pointer;
+                accent-color: var(--primary, #0066ff);
+                
+                &:hover:not(:disabled) {
+                    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+                }
+                
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+            }
+        }
+    }
+}
+
+// Group header checkbox (select all) - same size
+.o_list_table {
+    thead .o_list_record_selector {
+        .o-checkbox input[type="checkbox"] {
+            width: 1.25rem !important;
+            height: 1.25rem !important;
+        }
+    }
+}
+
+// Ensure consistent checkbox styling across all states
+.o-checkbox {
+    input[type="checkbox"]:checked {
+        background-color: var(--primary, #0066ff) !important;
+        border-color: var(--primary, #0066ff) !important;
+    }
+    
+    input[type="checkbox"]:focus-visible {
+        outline: 2px solid var(--primary, #0066ff);
+        outline-offset: 2px;
+    }
+}

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_attendance_form_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.form.inherit</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='in_browser']" position="after">
+                <field name="checkin_photo" widget="image" class="oe_avatar"
+                    options="{'size': [90, 90]}" />
+            </xpath>
+
+            <xpath expr="//field[@name='out_browser']" position="after">
+                <field name="checkout_photo" widget="image" class="oe_avatar"
+                    options="{'size': [90, 90]}" />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

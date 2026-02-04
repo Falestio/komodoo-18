@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Extend PivotView to include the filter before buttons -->
+    <t t-name="search_by_date_range.PivotView" t-inherit="web.PivotView" t-inherit-mode="extension">
+        <xpath expr="//Layout" position="inside">
+            <t t-set-slot="before-content">
+                <t t-if="dateRangeState and (dateRangeState.showDateFilter or dateRangeState.showNumericFilter)">
+                    <div class="search-by-date-range-filter w-100 d-block p-2 bg-light border-bottom">
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <!-- Date Range Section -->
+                            <t t-if="dateRangeState.showDateFilter">
+                                <div class="date-range-section d-flex align-items-center gap-2">
+                                    <label class="fw-bold text-muted small mb-0">Date:</label>
+                                    <select class="form-select form-select-sm" style="width: auto; min-width: 120px;"
+                                            t-on-change="(ev) => this.onDateFieldChange(ev)">
+                                        <t t-foreach="dateRangeState.dateFields" t-as="field" t-key="field.name">
+                                            <option t-att-value="field.name" 
+                                                    t-att-selected="dateRangeState.selectedDateField === field.name">
+                                                <t t-esc="field.string"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                    <input type="date" class="form-control form-control-sm" style="width: auto;"
+                                           t-att-value="dateRangeState.dateFrom"
+                                           t-on-change="(ev) => this.onDateFromChange(ev)"
+                                           placeholder="Dari"/>
+                                    <span class="text-muted">-</span>
+                                    <input type="date" class="form-control form-control-sm" style="width: auto;"
+                                           t-att-value="dateRangeState.dateTo"
+                                           t-on-change="(ev) => this.onDateToChange(ev)"
+                                           placeholder="Sampai"/>
+                                </div>
+                            </t>
+
+                            <!-- Numeric Range Section -->
+                            <t t-if="dateRangeState.showNumericFilter">
+                                <div class="numeric-range-section d-flex align-items-center gap-2 ms-3">
+                                    <label class="fw-bold text-muted small mb-0">Number:</label>
+                                    <select class="form-select form-select-sm" style="width: auto; min-width: 120px;"
+                                            t-on-change="(ev) => this.onNumericFieldChange(ev)">
+                                        <t t-foreach="dateRangeState.numericFields" t-as="field" t-key="field.name">
+                                            <option t-att-value="field.name"
+                                                    t-att-selected="dateRangeState.selectedNumericField === field.name">
+                                                <t t-esc="field.string"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                    <input type="number" class="form-control form-control-sm" style="width: 100px;"
+                                           t-att-value="dateRangeState.numericFrom"
+                                           t-on-change="(ev) => this.onNumericFromChange(ev)"
+                                           placeholder="Dari"/>
+                                    <span class="text-muted">-</span>
+                                    <input type="number" class="form-control form-control-sm" style="width: 100px;"
+                                           t-att-value="dateRangeState.numericTo"
+                                           t-on-change="(ev) => this.onNumericToChange(ev)"
+                                           placeholder="Sampai"/>
+                                </div>
+                            </t>
+
+                            <!-- Action Buttons -->
+                            <div class="filter-actions d-flex gap-2 ms-2">
+                                <button type="button" class="btn btn-primary btn-sm"
+                                        t-on-click="() => this.onApplyRangeFilter()">
+                                    <i class="fa fa-search"/> Cari
+                                </button>
+                                <button type="button" class="btn btn-secondary btn-sm"
+                                        t-on-click="() => this.onClearRangeFilter()">
+                                    <i class="fa fa-times"/> Reset
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </t>
+</odoo>

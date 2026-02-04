@@ -1,0 +1,47 @@
+/* Search by Date Range Styles */
+
+.search-by-date-range-filter {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    display: block !important;
+    width: 100% !important;
+}
+
+.search-by-date-range-filter .date-range-section,
+.search-by-date-range-filter .numeric-range-section {
+    display: flex;
+    align-items: center;
+}
+
+.search-by-date-range-filter label {
+    white-space: nowrap;
+}
+
+.search-by-date-range-filter .form-control,
+.search-by-date-range-filter .form-select {
+    border-radius: 4px;
+}
+
+.search-by-date-range-filter .filter-actions .btn {
+    min-width: 80px;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .search-by-date-range-filter {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    .search-by-date-range-filter .date-range-section,
+    .search-by-date-range-filter .numeric-range-section {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+    
+    .search-by-date-range-filter .filter-actions {
+        margin-left: 0 !important;
+        margin-top: 0.5rem;
+    }
+}

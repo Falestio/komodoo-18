@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_km_attendance_dashboard" model="ir.actions.client">
+        <field name="name">Attendance Dashboard</field>
+        <field name="tag">km_attendance_dashboard</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="action_km_employee_attendance_history" model="ir.actions.client">
+        <field name="name">Employee Attendance History</field>
+        <field name="tag">km_employee_attendance_history</field>
+        <field name="target">current</field>
+    </record>
+
+    <menuitem
+        id="menu_km_attendance_dashboard"
+        name="Dashboard"
+        parent="hr_attendance.menu_hr_attendance_root"
+        sequence="2"
+        action="action_km_attendance_dashboard"/>
+
+    <menuitem
+        id="menu_km_employee_attendance_history"
+        name="Employee Attendances"
+        parent="hr_attendance.menu_hr_attendance_root"
+        sequence="3"
+        action="action_km_employee_attendance_history"/>
+</odoo>
