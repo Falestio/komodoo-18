@@ -189,7 +189,7 @@ class AttendanceDashboard extends Component {
 
     _loadState() {
         try {
-            return JSON.parse(localStorage.getItem("km_attendance_dashboard_state")) || {};
+            return JSON.parse(sessionStorage.getItem("km_attendance_dashboard_state")) || {};
         } catch {
             return {};
         }
@@ -207,7 +207,7 @@ class AttendanceDashboard extends Component {
             sortBy: this.state.sortBy,
             sortDir: this.state.sortDir,
         };
-        localStorage.setItem("km_attendance_dashboard_state", JSON.stringify(payload));
+        sessionStorage.setItem("km_attendance_dashboard_state", JSON.stringify(payload));
     }
 
     _loadUrlState() {

@@ -132,7 +132,7 @@ class EmployeeAttendanceHistory extends Component {
 
     _loadState() {
         try {
-            return JSON.parse(localStorage.getItem("km_employee_attendance_history_state")) || {};
+            return JSON.parse(sessionStorage.getItem("km_employee_attendance_history_state")) || {};
         } catch {
             return {};
         }
@@ -143,7 +143,7 @@ class EmployeeAttendanceHistory extends Component {
             month: this.state.month,
             employeeId: this.state.employeeId,
         };
-        localStorage.setItem("km_employee_attendance_history_state", JSON.stringify(payload));
+        sessionStorage.setItem("km_employee_attendance_history_state", JSON.stringify(payload));
     }
 
     _loadUrlState() {
