@@ -173,7 +173,7 @@
                                     <field name="code"/>
                                     <field name="amount"/>
                                     <field name="contract_id"/>
-                                    <field name="sequence" invisible="True"/>
+                                    <field name="sequence" column_invisible="True"/>
                                 </list>
                                 <form string="Payslip Line">
                                     <group col="4">
@@ -195,7 +195,7 @@
                                     <field name="name"/>
                                     <field name="code"/>
                                     <field name="category_id"/>
-                                    <field name="sequence" invisible="1"/>
+                                    <field name="sequence" column_invisible="1"/>
                                     <field name="quantity"/>
                                     <field name="rate"/>
                                     <field name="salary_rule_id"/>

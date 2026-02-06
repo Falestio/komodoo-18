@@ -41,10 +41,10 @@
         <field eval="20" name="priority"/>
         <field name="arch" type="xml">
             <list string="Salary Rules">
+                <field name="sequence" widget="handle"/>
+                <field name="category_id" column_invisible="1"/>
                 <field name="name"/>
                 <field name="code"/>
-                <field name="category_id" invisible="1"/>
-                <field name="sequence" invisible="1"/>
                 <field name="register_id"/>
                 <field name="company_id" groups="base.group_multi_company"
                        options="{'no_create': True}"/>

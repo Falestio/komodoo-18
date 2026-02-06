@@ -19,6 +19,7 @@
 #    If not, see <http://www.gnu.org/licenses/>.
 #
 #############################################################################
+from datetime import datetime, timedelta
 from dateutil import relativedelta
 import pandas as pd
 from odoo import api, fields, models, _
@@ -46,10 +47,39 @@ class HrOvertime(models.Model):
         return self.env['hr.employee'].search([('user_id', '=', self.env.uid)],
                                               limit=1)
 
-    @api.onchange('days_no_tmp')
-    def _onchange_days_no_tmp(self):
-        """Update the 'days_no' field when 'days_no_tmp' changes."""
-        self.days_no = self.days_no_tmp
+    @api.onchange('date_from')
+    def _onchange_date_from(self):
+        """When date_from is set, allow editing of duration and date_to."""
+        # Validation is done elsewhere
+        if self.date_from and not self.date_to:
+            # Initialize date_to to same as date_from if not set
+            self.date_to = self.date_from
+
+    @api.onchange('duration_value', 'duration_type')
+    def _onchange_duration_value(self):
+        """Calculate end date based on duration value."""
+        if self.date_from and self.duration_value and self.duration_value > 0:
+            start = self.date_from
+            if self.duration_type == 'hours':
+                # Add hours to date_from
+                self.date_to = start + timedelta(hours=self.duration_value)
+            elif self.duration_type == 'days':
+                # Add days to date_from
+                self.date_to = start + timedelta(days=self.duration_value)
+
+    @api.onchange('date_to')
+    def _onchange_date_to(self):
+        """Calculate duration value when date_to is manually changed."""
+        if self.date_from and self.date_to and self.date_to > self.date_from:
+            diff = self.date_to - self.date_from
+            total_seconds = diff.total_seconds()
+            
+            if self.duration_type == 'hours':
+                # Calculate hours (including fractional hours)
+                self.duration_value = total_seconds / 3600  # Convert to hours
+            elif self.duration_type == 'days':
+                # Calculate days (including fractional days)
+                self.duration_value = total_seconds / (24 * 3600)  # Convert to days
 
     name = fields.Char('Name', readonly=True,
                        help="Name of the overtime request.")
@@ -93,14 +123,23 @@ class HrOvertime(models.Model):
     contract_id = fields.Many2one('hr.contract', string="Contract",
                                   related="employee_id.contract_id",
                                   help="Contract of the employee")
-    date_from = fields.Datetime('Date From', help="Start date and time of"
-                                                  " the overtime request.")
-    date_to = fields.Datetime('Date to', help="End date and time of the "
-                                              "overtime request.")
+    date_from = fields.Datetime('Start Date & Time', required=True,
+                                help="Start date and time of the overtime request.")
+    duration_type = fields.Selection([('hours', 'Hours'), ('days', 'Days')],
+                                     string="Duration Type", default="hours",
+                                     required=True,
+                                     help="Type of duration for the overtime request")
+    duration_value = fields.Float('Duration',
+                                  help="Number of hours or days for overtime. "
+                                       "Leave empty to calculate from end time.",
+                                  digits=(10, 2))
+    date_to = fields.Datetime('End Date & Time',
+                              help="End date and time of the overtime request. "
+                                   "Auto-calculated or can be filled manually.")
     days_no_tmp = fields.Float('Hours', compute="_get_days", store=True,
                                help="Temporary field to store the calculated "
                                     "hours for the overtime request.")
-    days_no = fields.Float('No. of Days', store=True,
+    days_no = fields.Float('No. of Days', compute="_get_days", store=True,
                            help="Number of days for the overtime request.")
     desc = fields.Text('Description', help="Description of the overtime "
                                            "request.")
@@ -141,11 +180,6 @@ class HrOvertime(models.Model):
     global_leaves_ids = fields.One2many(
         related='employee_id.resource_calendar_id.global_leave_ids',
         help="Global leaves of the employee")
-    duration_type = fields.Selection([('hours', 'Hour'), ('days', 'Days')],
-                                     string="Duration Type", default="hours",
-                                     required=True,
-                                     help="Type of duration for the overtime "
-                                          "request")
     cash_hrs_amount = fields.Float(string='Overtime Amount', readonly=True,
                                    help="Amount for overtime based on hours")
     cash_day_amount = fields.Float(string='Overtime Amount', readonly=True,
@@ -174,9 +208,9 @@ class HrOvertime(models.Model):
                     'project_manager_id': sheet.project_id.user_id.id,
                 })
 
-    @api.depends('date_from', 'date_to')
+    @api.depends('date_from', 'date_to', 'duration_type')
     def _get_days(self):
-        """  Calculate the number of days or hours based on the duration type"""
+        """Calculate the number of days or hours based on the duration type and sync duration_value"""
         for recd in self:
             if recd.date_from and recd.date_to:
                 if recd.date_from > recd.date_to:
@@ -186,19 +220,32 @@ class HrOvertime(models.Model):
             if sheet.date_from and sheet.date_to:
                 start_dt = fields.Datetime.from_string(sheet.date_from)
                 finish_dt = fields.Datetime.from_string(sheet.date_to)
-                s = finish_dt - start_dt
-                difference = relativedelta.relativedelta(finish_dt, start_dt)
-                hours = difference.hours
-                minutes = difference.minutes
-                days_in_mins = s.days * 24 * 60
-                hours_in_mins = hours * 60
-                days_no = ((days_in_mins + hours_in_mins + minutes) / (24 * 60))
                 diff = sheet.date_to - sheet.date_from
-                days, seconds = diff.days, diff.seconds
-                hours = days * 24 + seconds // 3600
-                sheet.update({
-                    'days_no_tmp': hours if sheet.duration_type == 'hours' else days_no,
-                })
+                
+                # Calculate total hours
+                total_seconds = diff.total_seconds()
+                total_hours = total_seconds / 3600
+                
+                # Calculate days with fractional part
+                calculated_days = total_hours / 24
+                
+                # Always store the days value
+                sheet.days_no = calculated_days
+                
+                # Update days_no_tmp based on duration_type
+                if sheet.duration_type == 'hours':
+                    sheet.days_no_tmp = total_hours
+                    # Sync duration_value with total hours
+                    if abs(sheet.duration_value - total_hours) > 0.01:  # Avoid infinite loop
+                        sheet.duration_value = total_hours
+                else:  # days
+                    sheet.days_no_tmp = calculated_days
+                    # Sync duration_value with total days
+                    if abs(sheet.duration_value - calculated_days) > 0.01:  # Avoid infinite loop
+                        sheet.duration_value = calculated_days
+            else:
+                sheet.days_no_tmp = 0.0
+                sheet.days_no = 0.0
 
     @api.onchange('overtime_type_id')
     def _get_hour_amount(self):

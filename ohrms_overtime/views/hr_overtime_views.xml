@@ -35,8 +35,6 @@
                             <field name='department_id'/>
                             <field name='job_id'/>
                             <field name='manager_id'/>
-                            <field name="duration_type"
-                                   readonly="state != 'draft'"/>
                             <field name="is_current_user"
                                    invisible="1"/>
                         </group>
@@ -62,32 +60,48 @@
                                    readonly="state != 'draft'"/>
                         </group>
                     </group>
+                    <separator string="Durasi"/>
                     <group>
                         <group>
+                            <field name="duration_type"
+                                   readonly="state != 'draft' or not date_from"
+                                   required="date_from"/>
                             <field name="date_from" required="1"
                                    class="oe_inline"
-                                   readonly="state != 'draft'"/>
-                            <field name="date_to" required="1"
-                                   class="oe_inline"
-                                   readonly="state != 'draft'"/>
-                            <field name="days_no_tmp" string="Hours"
+                                   readonly="state != 'draft'"
+                                   help="Start date and time of the overtime request"/>
+                            <field name="date_to"
+                                    readonly="state != 'draft' or not date_from"
+                                    required="date_from"
+                                    help="Auto-calculated based on duration, or fill manually to calculate duration."/>
+                            <field name="duration_value" 
+                                   readonly="state != 'draft' or not date_from"
+                                   required="date_from"
+                                   help="Enter hours or days. End time will be calculated automatically."/>
+                        </group>
+                        <group>
+                            <!-- di hide dulu karena repetitif -->
+                            <!-- <field name="days_no_tmp" string="Total Hours"
+                                   readonly="1"
                                    invisible="duration_type == 'days'"/>
-                            <field name="days_no_tmp" string="Days"
-                                   invisible="duration_type == 'hours'"/>
+                            <field name="days_no_tmp" string="Total Days"
+                                   readonly="1"
+                                   invisible="duration_type == 'hours'"/> -->
                             <field name="is_payslip_paid" readonly="1"
-                                   invisible=" type != 'cash'"
+                                   invisible="type != 'cash'"
                                    widget="toggle_button"
                                    groups="hr.group_hr_manager"/>
                             <field name="days_no" readonly="1"
                                    invisible="1"/>
                         </group>
-                        <group>
+                        <!-- Belum jelas kegunaan dari public holiday -->
+                        <!-- <group>
                             <div>
                                 <separator string="Public Holiday"/>
                                 <field name="public_holiday"
                                        force_save="1"/>
                             </div>
-                        </group>
+                        </group> -->
                     </group>
                     <notebook>
                         <page string="Work Description" name="work_description">
