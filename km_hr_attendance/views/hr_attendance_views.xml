@@ -6,6 +6,24 @@
         <field name="model">hr.attendance</field>
         <field name="inherit_id" ref="hr_attendance.hr_attendance_view_form" />
         <field name="arch" type="xml">
+            <!-- Hide original check_in and check_out -->
+            <field name="check_in" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            
+            <field name="check_out" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            
+            <!-- Add UTC fields as replacement with simple labels -->
+            <xpath expr="//field[@name='check_in']" position="after">
+                <field name="check_in_utc" readonly="1" string="Check In"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='check_out']" position="after">
+                <field name="check_out_utc" readonly="1" string="Check Out"/>
+            </xpath>
+            
             <xpath expr="//field[@name='in_browser']" position="after">
                 <field name="checkin_photo" widget="image" class="oe_avatar"
                     options="{'size': [90, 90]}" />
@@ -15,6 +33,23 @@
                 <field name="checkout_photo" widget="image" class="oe_avatar"
                     options="{'size': [90, 90]}" />
             </xpath>
+        </field>
+    </record>
+
+    <record id="view_attendance_tree_inherit" model="ir.ui.view">
+        <field name="name">hr.attendance.list.inherit</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.view_attendance_tree" />
+        <field name="arch" type="xml">
+            <!-- Replace check_in with UTC value -->
+            <field name="check_in" position="replace">
+                <field name="check_in_utc" string="Check In"/>
+            </field>
+            
+            <!-- Replace check_out with UTC value -->
+            <field name="check_out" position="replace">
+                <field name="check_out_utc" string="Check Out"/>
+            </field>
         </field>
     </record>
 

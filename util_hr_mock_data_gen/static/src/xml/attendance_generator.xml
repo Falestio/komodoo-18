@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="util_hr_mock_data_gen.AttendanceGenerator">
+        <div class="o_attendance_generator">
+            <div class="o_generator_header">
+                <h2 class="mb-3">Attendance Data Generator</h2>
+                <p class="text-muted">Generate mock attendance data for testing purposes</p>
+            </div>
+
+            <div class="o_generator_content">
+                <!-- Configuration Panel -->
+                <div class="o_config_panel">
+                    <h4>Configuration</h4>
+                    
+                    <!-- Date Range -->
+                    <div class="o_config_section">
+                        <label class="o_section_label">Date Range</label>
+                        <div class="o_config_row">
+                            <div class="o_config_group">
+                                <label>From:</label>
+                                <input type="date" class="form-control" 
+                                       t-model="state.dateFrom" 
+                                       t-on-change="onDateFromChange"/>
+                            </div>
+                            <div class="o_config_group">
+                                <label>To:</label>
+                                <input type="date" class="form-control" 
+                                       t-model="state.dateTo" 
+                                       t-on-change="onDateToChange"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Work Hours -->
+                    <div class="o_config_section">
+                        <label class="o_section_label">Expected Work Hours</label>
+                        <div class="o_config_row">
+                            <div class="o_config_group">
+                                <label>Check In Time:</label>
+                                <input type="time" class="form-control" 
+                                       t-model="state.checkInTime"/>
+                            </div>
+                            <div class="o_config_group">
+                                <label>Check Out Time:</label>
+                                <input type="time" class="form-control" 
+                                       t-model="state.checkOutTime"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Randomization Controls -->
+                    <div class="o_config_section">
+                        <label class="o_section_label">Randomization</label>
+                        <div class="o_config_row">
+                            <div class="o_config_group">
+                                <label>Late % (0-100):</label>
+                                <input type="number" class="form-control" 
+                                       t-model.number="state.latePercentage"
+                                       min="0" max="100"/>
+                            </div>
+                            <div class="o_config_group">
+                                <label>Overtime % (0-100):</label>
+                                <input type="number" class="form-control" 
+                                       t-model.number="state.overtimePercentage"
+                                       min="0" max="100"/>
+                            </div>
+                            <div class="o_config_group">
+                                <label>Variance (minutes):</label>
+                                <input type="number" class="form-control" 
+                                       t-model.number="state.varianceMinutes"
+                                       min="0" max="120"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Options -->
+                    <div class="o_config_section">
+                        <label class="o_section_label">Options</label>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" 
+                                   id="randomize" t-model="state.randomize"/>
+                            <label class="form-check-label" for="randomize">
+                                Enable randomization
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" 
+                                   id="deleteExisting" t-model="state.deleteExisting"/>
+                            <label class="form-check-label" for="deleteExisting">
+                                Delete existing attendance in period
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Generate Button -->
+                    <div class="o_config_section">
+                        <button class="btn btn-primary btn-lg w-100" 
+                                t-on-click="onGenerate"
+                                t-att-disabled="state.generating || state.selectedEmployees.size === 0">
+                            <i t-if="state.generating" class="fa fa-spinner fa-spin me-2"/>
+                            <i t-else="" class="fa fa-magic me-2"/>
+                            <t t-if="state.generating">Generating...</t>
+                            <t t-else="">Generate Attendance Data</t>
+                        </button>
+                        <div class="text-center mt-2 text-muted" t-if="state.selectedEmployees.size > 0">
+                            <small>
+                                <t t-esc="state.selectedEmployees.size"/> employee(s) selected
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Employee Selection Panel -->
+                <div class="o_employee_panel">
+                    <div class="o_panel_header">
+                        <h4>Select Employees</h4>
+                        <div class="o_employee_search">
+                            <input type="text" 
+                                   class="form-control" 
+                                   placeholder="Search employees..."
+                                   t-on-input="onSearchChange"/>
+                        </div>
+                    </div>
+
+                    <div class="o_employee_actions">
+                        <button class="btn btn-sm btn-outline-primary" 
+                                t-on-click="toggleSelectAll">
+                            <i t-if="state.selectAll" class="fa fa-check-square-o me-1"/>
+                            <i t-else="" class="fa fa-square-o me-1"/>
+                            <t t-if="state.selectAll">Deselect All</t>
+                            <t t-else="">Select All</t>
+                        </button>
+                    </div>
+
+                    <div class="o_employee_list" t-if="!state.loading">
+                        <div t-foreach="filteredEmployees" 
+                             t-as="employee" 
+                             t-key="employee.id"
+                             class="o_employee_item"
+                             t-att-class="{'o_selected': isSelected(employee.id)}"
+                             t-on-click="() => this.toggleEmployee(employee.id)">
+                            <div class="form-check">
+                                <input type="checkbox" 
+                                       class="form-check-input"
+                                       t-att-checked="isSelected(employee.id)"
+                                       t-on-click.stop="() => this.toggleEmployee(employee.id)"/>
+                            </div>
+                            <div class="o_employee_info">
+                                <div class="o_employee_name"><t t-esc="employee.name"/></div>
+                                <div class="o_employee_details">
+                                    <span t-if="employee.department"><t t-esc="employee.department"/></span>
+                                    <span t-if="employee.department and employee.job"> • </span>
+                                    <span t-if="employee.job"><t t-esc="employee.job"/></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div t-if="filteredEmployees.length === 0" class="o_empty_list">
+                            <p class="text-muted">No employees found</p>
+                        </div>
+                    </div>
+
+                    <div class="o_loading" t-if="state.loading">
+                        <i class="fa fa-spinner fa-spin fa-2x"/>
+                        <p>Loading employees...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

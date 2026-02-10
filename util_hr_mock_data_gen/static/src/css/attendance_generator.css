@@ -1,0 +1,212 @@
+/* Attendance Generator Styles */
+
+.o_attendance_generator {
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.o_generator_header {
+    background: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    text-align: center;
+}
+
+.o_generator_header h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.o_generator_content {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+/* Configuration Panel */
+.o_config_panel {
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 20px;
+}
+
+.o_config_panel h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.o_config_section {
+    margin-bottom: 24px;
+}
+
+.o_config_section:last-child {
+    margin-bottom: 0;
+}
+
+.o_section_label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 12px;
+}
+
+.o_config_row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.o_config_group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.o_config_group label {
+    display: block;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.o_config_group .form-control {
+    font-size: 14px;
+}
+
+.o_config_section .form-check {
+    margin-bottom: 8px;
+}
+
+.o_config_section .form-check-label {
+    font-size: 14px;
+    color: #495057;
+    cursor: pointer;
+}
+
+/* Employee Panel */
+.o_employee_panel {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 240px);
+}
+
+.o_panel_header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.o_panel_header h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 12px;
+}
+
+.o_employee_search .form-control {
+    font-size: 14px;
+}
+
+.o_employee_actions {
+    padding: 12px 24px;
+    border-bottom: 1px solid #e9ecef;
+    background-color: #f8f9fa;
+}
+
+.o_employee_list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 8px;
+}
+
+.o_employee_item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    margin-bottom: 4px;
+}
+
+.o_employee_item:hover {
+    background-color: #f8f9fa;
+}
+
+.o_employee_item.o_selected {
+    background-color: #e7f3ff;
+    border: 1px solid #b3d9ff;
+}
+
+.o_employee_info {
+    flex: 1;
+}
+
+.o_employee_name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.o_employee_details {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.o_empty_list {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.o_loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+}
+
+.o_loading i {
+    margin-bottom: 16px;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .o_generator_content {
+        grid-template-columns: 1fr;
+    }
+
+    .o_config_panel {
+        position: static;
+    }
+
+    .o_employee_panel {
+        max-height: 500px;
+    }
+}
+
+@media (max-width: 576px) {
+    .o_config_row {
+        flex-direction: column;
+    }
+
+    .o_config_group {
+        width: 100%;
+    }
+}

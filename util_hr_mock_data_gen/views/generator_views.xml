@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Client Action for Attendance Generator -->
+    <record id="action_attendance_generator" model="ir.actions.client">
+        <field name="name">Attendance Generator</field>
+        <field name="tag">util_attendance_generator</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Menu Item -->
+    <menuitem
+        id="menu_attendance_generator"
+        name="HR Data Generator"
+        web_icon="util_hr_mock_data_gen,static/description/icon.png"
+        sequence="600"
+        action="action_attendance_generator"
+        groups="base.group_system"/>
+</odoo>

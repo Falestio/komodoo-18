@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_payslip_view_form_inherit_km" model="ir.ui.view">
+        <field name="name">hr.payslip.view.form.inherit.km.payslip</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id"
+               ref="hr_payroll_community.hr_payslip_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add computed fields -->
+            <field name="name" position="after">
+                <field name="payslip_attendance_ids" invisible="1"/>
+                <field name="payslip_overtime_ids" invisible="1"/>
+                <field name="payslip_leave_ids" invisible="1"/>
+            </field>
+
+            <!-- Rename page: hide original content, show attendance -->
+            <xpath expr="//field[@name='worked_days_line_ids']/.." position="attributes">
+                <attribute name="string">Worked Days</attribute>
+            </xpath>
+
+            <!-- Hide original worked_days_line_ids -->
+            <field name="worked_days_line_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <!-- Hide Other Inputs section -->
+            <field name="input_line_ids" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <!-- Insert attendance list before the hidden worked_days_line_ids -->
+            <field name="worked_days_line_ids" position="before">
+                <field name="payslip_attendance_ids" readonly="1" nolabel="1">
+                    <list string="Attendance Records">
+                        <field name="check_in_date_formatted" string="Tanggal"/>
+                        <field name="check_in_time_only" string="Check In"/>
+                        <field name="check_out_time_only" string="Check Out"/>
+                        <field name="worked_hours" string="Hours" widget="float_time"/>
+                    </list>
+                </field>
+            </field>
+
+            <!-- Add Overtime and Time Off pages (position=inside appends at the end) -->
+            <!-- We use position before the Salary Computation page to control order -->
+            <xpath expr="//field[@name='line_ids']/.." position="before">
+                <page string="Overtime">
+                    <field name="payslip_overtime_ids" readonly="1" nolabel="1">
+                        <list string="Overtime Records">
+                            <field name="name"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="duration_type"/>
+                            <field name="duration_value"/>
+                            <field name="days_no_tmp" string="Hours"/>
+                            <field name="days_no" string="Days"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Time Off">
+                    <field name="payslip_leave_ids" readonly="1" nolabel="1">
+                        <list string="Time Off Records">
+                            <field name="name" string="Description"/>
+                            <field name="holiday_status_id"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="number_of_days"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
