@@ -136,10 +136,6 @@ class AttendanceGenerator(models.AbstractModel):
                     
                     check_in_dt = check_in_dt + timedelta(minutes=variance)
                     
-                    # Subtract 7 hours to convert from WIB (UTC+7) to UTC
-                    # Because Odoo will add 7 hours when displaying
-                    check_in_dt = check_in_dt - timedelta(hours=7)
-                    
                     # Generate check-out time
                     check_out_dt = datetime.combine(work_date, time(check_out_hour, check_out_minute))
                     
@@ -151,9 +147,6 @@ class AttendanceGenerator(models.AbstractModel):
                     # Apply variance to checkout
                     checkout_variance = random.randint(-variance_minutes, variance_minutes) if randomize else 0
                     check_out_dt = check_out_dt + timedelta(minutes=checkout_variance)
-                    
-                    # Subtract 7 hours to convert from WIB (UTC+7) to UTC
-                    check_out_dt = check_out_dt - timedelta(hours=7)
                     
                     # Create attendance record
                     self.env['hr.attendance'].create({

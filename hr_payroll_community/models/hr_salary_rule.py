@@ -201,17 +201,14 @@ class HrSalaryRule(models.Model):
                             rec.name, rec.code))
             else:
                 try:
-                    safe_eval(rec.amount_python_compute, localdict, mode='exec',
-                              nocopy=True)
+                    safe_eval(rec.amount_python_compute, localdict, mode='exec', nocopy=True)
                     return (float(localdict['result']),
-                            'result_qty' in localdict and
-                            localdict['result_qty'] or 1.0, 'result_rate'
-                            in localdict and localdict['result_rate'] or 100.0)
-                except:
+                            'result_qty' in localdict and localdict['result_qty'] or 1.0,
+                            'result_rate' in localdict and localdict['result_rate'] or 100.0)
+                except Exception as e:
                     raise UserError(
-                        _('Wrong python code defined for salary '
-                          'rule %s (%s).') % (
-                            rec.name, rec.code))
+                        _('Wrong python code defined for salary rule %s (%s).\nError: %s\nCode:\n%s') % (
+                            rec.name, rec.code, str(e), rec.amount_python_compute))
 
     def _satisfy_condition(self, localdict):
         """

@@ -6,29 +6,24 @@
         <field name="inherit_id"
                ref="hr_payroll_community.hr_payslip_view_form"/>
         <field name="arch" type="xml">
-            <!-- Add computed fields -->
             <field name="name" position="after">
                 <field name="payslip_attendance_ids" invisible="1"/>
                 <field name="payslip_overtime_ids" invisible="1"/>
                 <field name="payslip_leave_ids" invisible="1"/>
             </field>
 
-            <!-- Rename page: hide original content, show attendance -->
             <xpath expr="//field[@name='worked_days_line_ids']/.." position="attributes">
                 <attribute name="string">Worked Days</attribute>
             </xpath>
 
-            <!-- Hide original worked_days_line_ids -->
             <field name="worked_days_line_ids" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
 
-            <!-- Hide Other Inputs section -->
             <field name="input_line_ids" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
 
-            <!-- Insert attendance list before the hidden worked_days_line_ids -->
             <field name="worked_days_line_ids" position="before">
                 <field name="payslip_attendance_ids" readonly="1" nolabel="1">
                     <list string="Attendance Records">
