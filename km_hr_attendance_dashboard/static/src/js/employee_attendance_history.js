@@ -113,9 +113,15 @@ class EmployeeAttendanceHistory extends Component {
         this.loadData();
     }
 
+    _parseUtcDate(dateStr) {
+        if (!dateStr) return null;
+        const iso = dateStr.includes("Z") || dateStr.includes("+") ? dateStr : dateStr.replace(" ", "T") + "Z";
+        return new Date(iso);
+    }
+
     formatDateTime(dateStr) {
         if (!dateStr) return "-";
-        const date = new Date(dateStr);
+        const date = this._parseUtcDate(dateStr);
         return date.toLocaleString("id-ID", {
             year: "numeric",
             month: "2-digit",

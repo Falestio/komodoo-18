@@ -98,9 +98,17 @@ class AttendanceDashboard extends Component {
         this.loadData();
     }
 
+    _parseUtcDate(dateStr) {
+        if (!dateStr) return null;
+        // Odoo returns datetimes as UTC strings without timezone indicator (e.g. "2024-01-01 07:00:00")
+        // Append 'Z' so JavaScript treats it as UTC and converts correctly to local timezone
+        const iso = dateStr.includes("Z") || dateStr.includes("+") ? dateStr : dateStr.replace(" ", "T") + "Z";
+        return new Date(iso);
+    }
+
     formatDateTime(dateStr) {
         if (!dateStr) return "-";
-        const date = new Date(dateStr);
+        const date = this._parseUtcDate(dateStr);
         return date.toLocaleString("id-ID", {
             year: "numeric",
             month: "2-digit",
@@ -112,7 +120,7 @@ class AttendanceDashboard extends Component {
 
     formatDate(dateStr) {
         if (!dateStr) return "-";
-        const date = new Date(dateStr);
+        const date = this._parseUtcDate(dateStr);
         return date.toLocaleDateString("id-ID", {
             year: "numeric",
             month: "2-digit",
@@ -122,7 +130,7 @@ class AttendanceDashboard extends Component {
 
     formatTime(dateStr) {
         if (!dateStr) return "-";
-        const date = new Date(dateStr);
+        const date = this._parseUtcDate(dateStr);
         return date.toLocaleTimeString("id-ID", {
             hour: "2-digit",
             minute: "2-digit",

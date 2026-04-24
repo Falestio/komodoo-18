@@ -27,7 +27,7 @@
                 <field name="name"/>
                 <field name="date_start"/>
                 <field name="date_end"/>
-                <field name="credit_note"/>
+                <!-- <field name="credit_note"/> -->
                 <field name="state"/>
             </list>
         </field>
@@ -58,11 +58,11 @@
                                         -
                                         <field name="date_end"/>
                                     </span>
-                                    <span class="float-right"
+                                    <!-- <span class="float-right"
                                           title="Is a Blocking Reason?">
                                         <field name="credit_note"
                                                widget="boolean"/>
-                                    </span>
+                                    </span> -->
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                             <field name="date_end" class="oe_inline"
                                    readonly="state != 'draft'"/>
                         </div>
-                        <field name="credit_note" readonly="state != 'draft'"/>
+                        <field name="credit_note" invisible="1" readonly="state != 'draft'"/>
                     </group>
                     <separator string="Payslips"/>
                     <field name="slip_ids" readonly="state != 'draft'"/>

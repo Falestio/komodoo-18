@@ -138,10 +138,10 @@
                         <field name="number" readonly="state != 'draft'"/>
                         <field name="struct_id" readonly="state != 'draft'"/>
                         <field name="name" readonly="state != 'draft'"/>
-                        <field name="credit_note" readonly="state != 'draft'"/>
+                        <field name="credit_note" invisible="1" readonly="state != 'draft'"/>
                     </group>
                     <notebook>
-                        <page string="Worked Days &amp; Inputs">
+                        <page string="Worked Days &amp; Inputs" name="worked_days_inputs">
                             <separator string="Worked Days" invisible="1"/>/>
                             <field name="worked_days_line_ids"
                                    readonly="state != 'draft'">
@@ -186,7 +186,7 @@
                                 </form>
                             </field>
                         </page>
-                        <page string="Salary Computation">
+                        <page string="Salary Computation" name="salary_computation">
                             <field name="line_ids" colspan="4" nolabel="1"
                                    readonly="state != 'draft'">
                                 <list string="Salary Structure"
@@ -217,7 +217,7 @@
                                 </form>
                             </field>
                         </page>
-                        <page string="Details By Salary Rule Category">
+                        <page string="Details By Salary Rule Category" name="details_by_category">
 
                             <field name="details_by_salary_rule_category_ids"
                                    context="{'search_default_category_id':1}"
@@ -231,7 +231,7 @@
                                 </list>
                             </field>
                         </page>
-                        <page string="Accounting Information">
+                        <page string="Accounting Information" name="accounting_information">
                             <group>
                                 <group string="Miscellaneous">
                                     <field name="company_id"
